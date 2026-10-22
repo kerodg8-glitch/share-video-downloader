@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Share Video Downloader</title>
+<style>
+body{font-family:Arial,sans-serif;background:#101827;color:white;text-align:center;padding:25px}
+main{max-width:420px;margin:50px auto;background:#1e293b;padding:24px;border-radius:20px}
+h1{color:#60a5fa}
+input,button{width:100%;box-sizing:border-box;padding:14px;margin-top:12px;border-radius:10px;font-size:16px}
+input{background:#0f172a;color:white;border:1px solid #64748b}
+button{background:#2563eb;color:white;border:0;font-weight:bold}
+p{color:#cbd5e1;line-height:1.5}
+</style>
+</head>
+<body>
+<main>
+<h1>▶ Share Video Downloader</h1>
+<p>Paste a direct video URL below to open or download it.</p>
+<input id="url" type="url" placeholder="Paste video URL here">
+<button onclick="openVideo()">Open Video</button>
+<button onclick="downloadVideo()">Download Video</button>
+<p id="message">Enter a video link to get started.</p>
+</main>
+<script>
+function getUrl(){
+ const input=document.getElementById('url').value.trim();
+ try{
+  const u=new URL(input);
+  if(u.protocol!=='https:'&&u.protocol!=='http:') throw Error();
+  return u.href;
+ }catch(e){
+  document.getElementById('message').textContent='Please enter a valid video URL.';
+  return null;
+ }
+}
+function openVideo(){
+ const u=getUrl();
+ if(u) window.open(u,'_blank','noopener');
+}
+function downloadVideo(){
+ const u=getUrl();
+ if(!u)return;
+ const a=document.createElement('a');
+ a.href=u;
+ a.download='';
+ a.target='_blank';
+ a.rel='noopener';
+ a.click();
+ document.getElementById('message').textContent='Download requested. Some websites do not allow direct downloads.';
+}
+</script>
+</body>
+</html>
