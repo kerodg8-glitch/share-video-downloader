@@ -1,0 +1,33 @@
+
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Package web app
+        run: |
+          mkdir -p output
+          cp index.html output/index.html
+          cd output
+          zip -r ../share-video-downloader-web.zip .
+
+      - name: Upload app files
+        uses: actions/upload-artifact@v4
+        with:
+          name: share-video-downloader-web
+          path: share-video-downloader-web.zip
